@@ -1,2 +1,4 @@
-package com.example.trrecordshop.repository;public class AlbumRepository {
+package com.example.trrecordshop.repository;
+
+public class AlbumRepository {
 }

@@ -1,2 +1,5 @@
-package com.example.trrecordshop.service;public class RecordShopService {
+package com.example.trrecordshop.service;
+
+public class RecordShopService {
+
 }
