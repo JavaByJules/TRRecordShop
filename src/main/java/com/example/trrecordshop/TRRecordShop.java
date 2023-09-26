@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class TRRecordShopApplication {
+public class TRRecordShop {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TRRecordShopApplication.class, args);
+		SpringApplication.run(TRRecordShop.class, args);
 	}
 
 }

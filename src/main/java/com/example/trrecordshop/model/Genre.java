@@ -1,2 +1,4 @@
-package com.example.trrecordshop.model;public class Genre {
+package com.example.trrecordshop.model;
+
+public enum Genre {
 }
