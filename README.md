@@ -25,7 +25,8 @@ Users wil interact with the API using a command-line interface or an API platfor
 
 ### Class Diagram
 ...
-[//]: # (![Class Diagram]&#40;Documentation/Resources/Record Shop UML.jpg&#41;)
+
+![Class Diagram](Documentation/Resources/Record-Shop-UML.jpg)
 
 <br />
 
