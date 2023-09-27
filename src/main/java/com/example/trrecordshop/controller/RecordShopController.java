@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-//@RequestMapping("/api/v1")
+@RequestMapping("/api/v1")
 public class RecordShopController {
     @GetMapping("/")
     public String welcome() {
@@ -18,27 +18,17 @@ public class RecordShopController {
         return null;
     }
 
-    @GetMapping("/albums")
+    @GetMapping("/album")
     @ResponseBody
-    public List<Album> getAlbumByTitle(@RequestParam(name = "title") String title) {
-        return null;
-    }
+    public List<Album> getAlbumByCriteria(
+            @RequestParam(name = "title", required = false) String title,
+            @RequestParam(name = "artist", required = false) String artist,
+            @RequestParam(name = "releaseYear", required = false) String releaseYear,
+            @RequestParam(name = "genre", required = false) String genre) {
 
-    @GetMapping("/albums")
-    @ResponseBody
-    public List<Album> getAlbumByArtist(@RequestParam(name = "artist") String artist) {
-        return null;
-    }
+        // if param is not null
+        // implement logic to return response
 
-    @GetMapping("/albums")
-    @ResponseBody
-    public List<Album> getAlbumByReleaseYear(@RequestParam(name = "releaseYear") String releaseYear) {
-        return null;
-    }
-
-    @GetMapping("/albums")
-    @ResponseBody
-    public List<Album> getAlbumByGenre(@RequestParam(name = "genre") String genre) {
         return null;
     }
 

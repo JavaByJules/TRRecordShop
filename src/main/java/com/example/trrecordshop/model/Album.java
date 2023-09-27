@@ -9,7 +9,6 @@ import lombok.*;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class Album {
     @Id
     @GeneratedValue
