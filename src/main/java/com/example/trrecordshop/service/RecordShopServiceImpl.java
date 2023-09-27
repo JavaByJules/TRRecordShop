@@ -71,18 +71,17 @@ public class RecordShopServiceImpl  implements  RecordShopService {
 
     @Override
     public int updateStock(Long id, int amount, boolean incrementing) {
-        int quantity = 0;
 
         if (albumRepository.findById(id).isPresent()) {
             Album retrievedAlbum = albumRepository.findById(id).get();
-            quantity = retrievedAlbum.getQuantity();
 
-            quantity += incrementing ? amount : -amount;
+            retrievedAlbum.setQuantity(retrievedAlbum.getQuantity() +
+                    (incrementing ? amount : -amount));
 
-            retrievedAlbum.setQuantity(quantity);
             albumRepository.save(retrievedAlbum);
+            return retrievedAlbum.getQuantity();
         }
-        return quantity;
+        return 0;
     }
 
     @Override
