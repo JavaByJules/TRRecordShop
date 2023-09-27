@@ -5,23 +5,23 @@ import com.example.trrecordshop.model.Genre;
 
 import java.util.List;
 
-public interface RecordShopService {
-    List<Album> getAllAlbums();
+    public interface RecordShopService {
+        List<Album> getAllAlbums();
 
-    List<Album> getAlbumsByArtist (String artist);
+        List<Album> getAlbumsByArtist (String artist);
 
-    List <Album> getAlbumsByReleaseYear (String releaseYear);
+        List <Album> getAlbumsByReleaseYear (int releaseYear);
 
-    List <Album> getAlbumsByGenre (Genre genre);
+        List <Album> getAlbumsByGenre (Genre genre);
 
-    Album getAlbumByAlbumName (String albumName);
+        Album getAlbumByAlbumName (String albumName);
 
-    Album insertAlbum (Album album);
+        Album insertAlbum (Album album);
 
-    void updateAlbumById (Long id);
+        boolean updateAlbumById (Long id, Album album);
 
-    int updateStock (Long id, int amount, boolean incrementing);
+        int updateStock (Long id, int amount, boolean incrementing);
 
-    boolean deleteByAlbumId (Long id);
+        boolean deleteByAlbumId (Long id);
 
-}
+    }
