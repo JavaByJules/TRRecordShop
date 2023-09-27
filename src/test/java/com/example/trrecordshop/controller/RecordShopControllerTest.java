@@ -43,7 +43,7 @@ class RecordShopControllerTest {
     }
 
     @Test
-    public void testWelcomeReturnsMessageString() throws Exception {
+    public void testWelcomeReturnsMessage() throws Exception {
         this.mockMvcController.perform(
                 MockMvcRequestBuilders.get("/api/v1/"))
                 .andExpect(MockMvcResultMatchers.content().string("Welcome Page"));
@@ -51,7 +51,7 @@ class RecordShopControllerTest {
 
     @Disabled
     @Test
-    public void testGetAllAlbumsReturnsAlbumList() throws Exception {
+    public void testGetAllAlbumsReturnsAllAlbums() throws Exception {
         List<Album> albumList = new ArrayList<>();
         albumList.add(new Album());
         albumList.add(new Album());
@@ -76,10 +76,10 @@ class RecordShopControllerTest {
 
     @Disabled
     @Test
-    public void testGetAlbumByTitle() throws Exception {
+    public void testGetAlbumsByTitleReturnsAlbums() throws Exception {
         Album album = new Album();
 
-        when(mockRecordShopServiceImpl.getAlbumByTitle()).thenReturn(album);
+        when(mockRecordShopServiceImpl.getAlbumsByTitle()).thenReturn(album);
 
         this.mockMvcController.perform(
                 MockMvcRequestBuilders.get("/api/v1/album?title=" + album.getTitle()))
@@ -89,10 +89,10 @@ class RecordShopControllerTest {
 
     @Disabled
     @Test
-    public void testGetAlbumByArtist() throws Exception {
+    public void testGetAlbumsByArtistReturnsAlbums() throws Exception {
         Album album = new Album();
 
-        when(mockRecordShopServiceImpl.getAlbumByArtist()).thenReturn(album);
+        when(mockRecordShopServiceImpl.getAlbumsByArtist()).thenReturn(album);
 
         this.mockMvcController.perform(
                         MockMvcRequestBuilders.get("/api/v1/album?artist=" + album.getArtist()))
@@ -102,10 +102,10 @@ class RecordShopControllerTest {
 
     @Disabled
     @Test
-    public void testGetAlbumByReleaseYear() throws Exception {
+    public void testGetAlbumsByReleaseYearReturnsAlbums() throws Exception {
         Album album = new Album();
 
-        when(mockRecordShopServiceImpl.getAlbumByReleaseYear()).thenReturn(album);
+        when(mockRecordShopServiceImpl.getAlbumsByReleaseYear()).thenReturn(album);
 
         this.mockMvcController.perform(
                         MockMvcRequestBuilders.get("/api/v1/album?releaseYear=" + album.getReleaseYear()))
@@ -115,10 +115,10 @@ class RecordShopControllerTest {
 
     @Disabled
     @Test
-    public void testGetAlbumByGenre() throws Exception {
+    public void testGetAlbumsByGenreReturnsAlbums() throws Exception {
         Album album = new Album();
 
-        when(mockRecordShopServiceImpl.getAlbumByGenre()).thenReturn(album);
+        when(mockRecordShopServiceImpl.getAlbumsByGenre()).thenReturn(album);
 
         this.mockMvcController.perform(
                         MockMvcRequestBuilders.get("/api/v1/album?genre=" + album.getGenre()))
