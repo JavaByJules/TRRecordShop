@@ -23,7 +23,7 @@ import static org.mockito.Mockito.*;
 
 @AutoConfigureMockMvc
 @SpringBootTest
-class RecordShopControllerTest {
+class RecordShopControllerTests {
 
     @Mock
     private RecordShopServiceImpl mockRecordShopServiceImpl;
