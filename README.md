@@ -22,6 +22,19 @@ Users wil interact with the API using a command-line interface or an API platfor
 ## Planning
 ### User Journey
 ...
+![User Journey](Documentation/Resources/getAllAlbums.png)
+
+![User Journey](Documentation/Resources/getAlbumsByArtist.png)
+
+![User Journey](Documentation/Resources/getAlbumByAlbumName.png)
+
+![User Journey](Documentation/Resources/insertAlbum.png)
+
+![User Journey](Documentation/Resources/updateAlbumById.png)
+
+![User Journey](Documentation/Resources/updateStock.png)
+
+<br />
 
 ### Class Diagram
 ...
