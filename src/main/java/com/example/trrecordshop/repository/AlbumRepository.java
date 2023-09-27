@@ -16,4 +16,6 @@ public interface AlbumRepository extends CrudRepository<Album, Long> {
 
     public List<Album> getAlbumsByGenre(Genre genre);
 
+    public Album getAlbumByTitleContainsIgnoreCase (String title);
+
 }
