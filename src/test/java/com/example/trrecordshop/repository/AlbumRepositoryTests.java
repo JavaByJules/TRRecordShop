@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -16,15 +17,15 @@ public class AlbumRepositoryTests {
     @Autowired
     private AlbumRepository albumRepository;
 
-    //@Test
-    //public void testEnumPreservation() {
-    //    Album album = Album.builder().artist("artist").title("title").releaseYear(1995).genre(Genre.HIPHOP).quantity(0).build();
+    @Test
+    public void testEnumPreservation() {
+        Album album = Album.builder().artist("artist").title("title").releaseYear(1995).genre(Genre.HIPHOP).quantity(0).build();
 
-    //    albumRepository.save(album);
+        albumRepository.save(album);
 
-    //    Album savedAlbum =  albumRepository.findById(1L).get();
-    //    assertThat(savedAlbum.getGenre()).isEqualTo(Genre.HIPHOP);
-    //}
+        Album savedAlbum =  albumRepository.findById(1L).get();
+        assertThat(savedAlbum.getGenre()).isEqualTo(Genre.HIPHOP);
+    }
 
     @Test
     public void testGetAllAlbums() {
@@ -108,33 +109,32 @@ public class AlbumRepositoryTests {
         assertThat(albumByGenreOther.size()).isEqualTo(0);
     }
 
-    //@Disabled
-    //@Test
-    //public void testAlbumByAlbumName() {
-    //    Album album1 = Album.builder().id(1L).artist("artist1").title("title1").releaseYear(1995).genre(Genre.HIPHOP).quantity(0).build();
-    //    Album album2 = Album.builder().id(2L).artist("artist2").title("title2").releaseYear(1996).genre(Genre.BLUES).quantity(1).build();
-    //    Album album3 = Album.builder().id(3L).artist("artist3").title("title3").releaseYear(1995).genre(Genre.HIPHOP).quantity(2).build();
+    @Test
+    public void testAlbumByAlbumName() {
+        Album album1 = Album.builder().id(1L).artist("artist1").title("title1").releaseYear(1995).genre(Genre.HIPHOP).quantity(0).build();
+        Album album2 = Album.builder().id(2L).artist("artist2").title("title2").releaseYear(1996).genre(Genre.BLUES).quantity(1).build();
+        Album album3 = Album.builder().id(3L).artist("artist3").title("title3").releaseYear(1995).genre(Genre.HIPHOP).quantity(2).build();
 
-    //    albumRepository.save(album1);
-    //    albumRepository.save(album2);
-    //    albumRepository.save(album3);
+        albumRepository.save(album1);
+        albumRepository.save(album2);
+        albumRepository.save(album3);
 
-    //    String titleToFind = "title2";
-    //    Album albumByTitle = albumRepository.getAlbumsByTitleContainsIgnoreCase(titleToFind);
-    //    assertThat(albumByTitle).isNotNull();
-    //    assertThat(albumByTitle.getTitle()).isEqualTo(titleToFind);
+        String titleToFind = "title2";
+        List<Album> albumByTitle = albumRepository.getAlbumsByTitleContainsIgnoreCase(titleToFind);
+        assertThat(albumByTitle).isNotNull();
+        assertThat(albumByTitle.get(0).getTitle()).isEqualTo(titleToFind);
 
-    //    String titleToFindUC = "LE2";
-    //    Album albumByTitleUC = albumRepository.getAlbumsByTitleContainsIgnoreCase(titleToFindUC);
-    //    assertThat(albumByTitle).isNotNull();
-    //    assertThat(albumByTitle.getTitle()).isEqualTo(titleToFind);
+        String titleToFindUC = "LE2";
+        List<Album> albumByTitleUC = albumRepository.getAlbumsByTitleContainsIgnoreCase(titleToFindUC);
+        assertThat(albumByTitle).isNotNull();
+        assertThat(albumByTitle.get(0).getTitle()).isEqualTo(titleToFind);
 
 
-    //    String titleToFindNone = "title4";
-    //    Album albumByTitleNone = albumRepository.getAlbumsByTitleContainsIgnoreCase(titleToFindNone);
-    //    assertThat(albumByTitleNone).isNull();
+        String titleToFindNone = "title4";
+        List<Album> albumByTitleNone = albumRepository.getAlbumsByTitleContainsIgnoreCase(titleToFindNone);
+        assertThat(albumByTitleNone).isEqualTo(new ArrayList<>());
 
-    //}
+    }
 
     @Test
     public void testInsertAlbum() {
@@ -165,22 +165,22 @@ public class AlbumRepositoryTests {
         assertThat(albumRepository.findById(1L).get().getQuantity()).isEqualTo(10);
     }
 
-    //@Test
-    //public void testDeleteAlbumById() {
-    //    Album album1 = Album.builder().artist("artist1").title("title1").releaseYear(1995).genre(Genre.HIPHOP).quantity(0).build();
-    //    Album album2 = Album.builder().artist("artist2").title("title2").releaseYear(1996).genre(Genre.BLUES).quantity(1).build();
-    //    Album album3 = Album.builder().artist("artist3").title("title3").releaseYear(1995).genre(Genre.HIPHOP).quantity(2).build();
+    @Test
+    public void testDeleteAlbumById() {
+        Album album1 = Album.builder().artist("artist1").title("title1").releaseYear(1995).genre(Genre.HIPHOP).quantity(0).build();
+        Album album2 = Album.builder().artist("artist2").title("title2").releaseYear(1996).genre(Genre.BLUES).quantity(1).build();
+        Album album3 = Album.builder().artist("artist3").title("title3").releaseYear(1995).genre(Genre.HIPHOP).quantity(2).build();
 
 
-    //    albumRepository.save(album1);
-    //    albumRepository.save(album2);
-    //    albumRepository.save(album3);
+        albumRepository.save(album1);
+        albumRepository.save(album2);
+        albumRepository.save(album3);
 
-    //    albumRepository.deleteById(3L);
+        albumRepository.deleteById(3L);
 
-    //    assertThat(albumRepository.count()).isEqualTo(2);
-    //    assertThat(albumRepository.findById(3L).isPresent()).isEqualTo(false);
-    //}
+        assertThat(albumRepository.count()).isEqualTo(2);
+        assertThat(albumRepository.findById(3L).isPresent()).isEqualTo(false);
+    }
 
 
 

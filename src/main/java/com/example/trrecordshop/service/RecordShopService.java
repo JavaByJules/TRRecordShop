@@ -18,10 +18,9 @@ import java.util.List;
 
         Album insertAlbum (Album album);
 
-        boolean updateAlbumById (Long id, Album album);
+        boolean updateAlbum(Album album);
 
         int updateStock (Long id, int amount, boolean incrementing);
 
         boolean deleteByAlbumId (Long id);
-
     }
