@@ -1,6 +1,7 @@
 package com.example.trrecordshop.controller;
 
 import com.example.trrecordshop.model.Album;
+import com.example.trrecordshop.model.Genre;
 import com.example.trrecordshop.service.RecordShopServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +18,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.mockito.Mockito.*;
 
@@ -46,84 +49,123 @@ class RecordShopControllerTests {
     public void testWelcomeReturnsMessage() throws Exception {
         this.mockMvcController.perform(
                 MockMvcRequestBuilders.get("/api/v1/"))
-                .andExpect(MockMvcResultMatchers.content().string("Welcome Page"));
+                .andExpect(MockMvcResultMatchers.content().string("Welcome to the TR Record Shop Backend"));
     }
 
-    @Disabled
     @Test
     public void testGetAllAlbumsReturnsAllAlbums() throws Exception {
-        List<Album> albumList = new ArrayList<>();
-        albumList.add(new Album());
-        albumList.add(new Album());
-        albumList.add(new Album());
+        List<Album> albumList = Arrays.asList(
+                Album.builder().artist("Abba").title("The Album").releaseYear(1977).genre(Genre.POP).quantity(10).build(),
+                Album.builder().artist("Tears For Fears").title("The Seeds Of Love").releaseYear(1989).genre(Genre.POP).quantity(10).build(),
+                Album.builder().artist("Janet Jackson").title("Rhythm Nation 1814").releaseYear(1989).genre(Genre.RNB).quantity(7).build()
+        );
 
         when(mockRecordShopServiceImpl.getAllAlbums()).thenReturn(albumList);
 
         this.mockMvcController.perform(
                         MockMvcRequestBuilders.get("/api/v1/albums"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].artist").value("Artist One"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].title").value("Album One"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].releaseYear").value("2021"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].artist").value("Artist Two"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].title").value("Album Two"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].releaseYear").value("2022"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[3].artist").value("Artist Three"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[3].title").value("Album Three"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[3].releaseYear").value("2023"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].artist").value("Abba"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].title").value("The Album"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].releaseYear").value(1977))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].artist").value("Tears For Fears"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].title").value("The Seeds Of Love"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].releaseYear").value(1989))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[2].artist").value("Janet Jackson"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[2].title").value("Rhythm Nation 1814"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[2].releaseYear").value(1989));
 
     }
 
-    @Disabled
     @Test
-    public void testGetAlbumsByTitleReturnsAlbums() throws Exception {
-        Album album = new Album();
+    public void testGetAlbumsByTitleReturnsMatchedAlbums() throws Exception {
+        String targetTitle = "Rhythm Nation 1814";
 
-        when(mockRecordShopServiceImpl.getAlbumsByTitle()).thenReturn(album);
+        List<Album> albumList = Arrays.asList(
+                Album.builder().artist("Abba").title("The Album").releaseYear(1977).genre(Genre.POP).quantity(10).build(),
+                Album.builder().artist("Tears For Fears").title("The Seeds Of Love").releaseYear(1989).genre(Genre.POP).quantity(10).build(),
+                Album.builder().artist("Janet Jackson").title(targetTitle).releaseYear(1989).genre(Genre.RNB).quantity(7).build()
+        );
+
+        List<Album> expectedAlbumList = albumList.stream()
+                .filter(album -> album.getTitle().equals(targetTitle))
+                .collect(Collectors.toList());
+
+        when(mockRecordShopServiceImpl.getAlbumsByTitle(targetTitle)).thenReturn(expectedAlbumList);
 
         this.mockMvcController.perform(
-                MockMvcRequestBuilders.get("/api/v1/album?title=" + album.getTitle()))
+                        MockMvcRequestBuilders.get("/api/v1/album?title=" + targetTitle))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("Album One"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].title").value(targetTitle));
     }
 
-    @Disabled
     @Test
     public void testGetAlbumsByArtistReturnsAlbums() throws Exception {
-        Album album = new Album();
+        String targetArtist = "Tears For Fears";
 
-        when(mockRecordShopServiceImpl.getAlbumsByArtist()).thenReturn(album);
+        List<Album> albumList = Arrays.asList(
+                Album.builder().artist("Abba").title("The Album").releaseYear(1977).genre(Genre.POP).quantity(10).build(),
+                Album.builder().artist("Tears For Fears").title("Songs From The Big Chair").releaseYear(1984).genre(Genre.POP).quantity(10).build(),
+                Album.builder().artist("Tears For Fears").title("The Seeds Of Love").releaseYear(1989).genre(Genre.POP).quantity(10).build()
+        );
+
+        List<Album> expectedAlbumList = albumList.stream()
+                .filter(album -> album.getArtist().equals(targetArtist))
+                .collect(Collectors.toList());
+
+        when(mockRecordShopServiceImpl.getAlbumsByArtist(targetArtist)).thenReturn(expectedAlbumList);
 
         this.mockMvcController.perform(
-                        MockMvcRequestBuilders.get("/api/v1/album?artist=" + album.getArtist()))
+                MockMvcRequestBuilders.get("/api/v1/album?artist=" + targetArtist))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.artist").value("Artist One"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].artist").value(targetArtist))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].artist").value(targetArtist));
     }
 
-    @Disabled
     @Test
     public void testGetAlbumsByReleaseYearReturnsAlbums() throws Exception {
-        Album album = new Album();
+        int targetReleaseYear = 1989;
 
-        when(mockRecordShopServiceImpl.getAlbumsByReleaseYear()).thenReturn(album);
+        List<Album> albumList = Arrays.asList(
+                Album.builder().artist("Abba").title("The Album").releaseYear(1977).genre(Genre.POP).quantity(10).build(),
+                Album.builder().artist("Tears For Fears").title("The Seeds Of Love").releaseYear(targetReleaseYear).genre(Genre.POP).quantity(10).build(),
+                Album.builder().artist("Janet Jackson").title("Rhythm Nation 1814").releaseYear(targetReleaseYear).genre(Genre.RNB).quantity(7).build()
+        );
+
+        List<Album> expectedAlbumList = albumList.stream()
+                        .filter(album -> album.getReleaseYear() == targetReleaseYear)
+                                .collect(Collectors.toList());
+
+        when(mockRecordShopServiceImpl.getAlbumsByReleaseYear(targetReleaseYear)).thenReturn(expectedAlbumList);
 
         this.mockMvcController.perform(
-                        MockMvcRequestBuilders.get("/api/v1/album?releaseYear=" + album.getReleaseYear()))
+                        MockMvcRequestBuilders.get("/api/v1/album?releaseYear=" + targetReleaseYear))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.releaseYear").value("2020"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].releaseYear").value(targetReleaseYear))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].releaseYear").value(targetReleaseYear));
     }
 
-    @Disabled
     @Test
     public void testGetAlbumsByGenreReturnsAlbums() throws Exception {
-        Album album = new Album();
+        Genre targetGenre = Genre.POP;
+        String targetGenreString = targetGenre.toString();
 
-        when(mockRecordShopServiceImpl.getAlbumsByGenre()).thenReturn(album);
+        List<Album> albumList = Arrays.asList(
+                Album.builder().artist("Abba").title("The Album").releaseYear(1977).genre(targetGenre).quantity(10).build(),
+                Album.builder().artist("Tears For Fears").title("The Seeds Of Love").releaseYear(1989).genre(targetGenre).quantity(10).build(),
+                Album.builder().artist("Janet Jackson").title("Rhythm Nation 1814").releaseYear(1989).genre(Genre.RNB).quantity(7).build()
+        );
+
+        List<Album> expectedAlbumList = albumList.stream()
+                        .filter(album -> album.getGenre().equals(targetGenre)).toList();
+
+        when(mockRecordShopServiceImpl.getAlbumsByGenre(targetGenre)).thenReturn(expectedAlbumList);
 
         this.mockMvcController.perform(
-                        MockMvcRequestBuilders.get("/api/v1/album?genre=" + album.getGenre()))
+                        MockMvcRequestBuilders.get("/api/v1/album?genre=" + targetGenreString))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.genre").value("Genre One"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].genre").value(targetGenreString))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].genre").value(targetGenreString));
     }
 
 }
