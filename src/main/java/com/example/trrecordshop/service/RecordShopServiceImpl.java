@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RecordShopServiceImpl  implements  RecordShopService {
@@ -18,8 +19,11 @@ public class RecordShopServiceImpl  implements  RecordShopService {
     @Override
     public List<Album> getAllAlbums() {
         List <Album> albums = new ArrayList<>();
-        albumRepository.findAll().forEach(albums::add);;
-        return albums;
+        albumRepository.findAll().forEach(albums::add);
+
+        return albums.stream()
+                .filter(album -> album.getQuantity() > 0)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -49,10 +53,10 @@ public class RecordShopServiceImpl  implements  RecordShopService {
     }
 
     @Override
-    public boolean updateAlbumById(Long id, Album album) {
+    public boolean updateAlbum(Album album) {
 
-        if (albumRepository.findById(id).isPresent()) {
-            Album retrievedAlbum = albumRepository.findById(id).get();
+        if (albumRepository.findById(album.getId()).isPresent()) {
+            Album retrievedAlbum = albumRepository.findById(album.getId()).get();
 
             retrievedAlbum.setTitle(album.getTitle());
             retrievedAlbum.setGenre(album.getGenre());

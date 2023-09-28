@@ -1,0 +1,11 @@
+INSERT INTO ALBUM (ID, ARTIST, TITLE, RELEASE_YEAR, QUANTITY)
+VALUES
+(1, 'Abba', 'The Album', '1977', 10),
+(2, 'Tears For Fears', 'Songs From The Big Chair', '1984', 10),
+(3, 'Tears For Fears', 'The Seeds Of Love', '1989', 10),
+(4, 'U2', 'Greatest Hits', '2001', 1),
+(5, 'God''s Kitchen', 'The True Sound Of A Clubbing Summer', '2001', 20),
+(6, 'Abba', 'Arrival', '1976', 0),
+(7, 'EastEnders Cast', 'Sing Along', '1985', 5);
+
+SELECT * FROM ALBUM;

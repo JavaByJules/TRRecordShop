@@ -9,10 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -66,29 +65,40 @@ public class RecordShopController {
         return new ResponseEntity<>(albums, HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("/album")
     public ResponseEntity<Album> addAlbum(@RequestBody Album album) {
         Album newAlbum = recordShopService.insertAlbum(album);
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("album", "/api/v1/album/" + newAlbum.getId().toString());
+        httpHeaders.setLocation(URI.create("/api/v1/album" + newAlbum.getId().toString()));
 
         return new ResponseEntity<>(newAlbum, httpHeaders, HttpStatus.CREATED);
     }
 
-    //@PatchMapping
-    //public ResponseEntity<Album> updateAlbum(
-    //        @RequestParam(name = "title") String title,
-    //        @RequestParam(name = "artist") String artist,
-    //        @RequestBody Album updatedAlbum) {
+    @PatchMapping("/album/update")
+    public ResponseEntity<Album> updateAlbum(@RequestBody Album updatedAlbum) {
 
-    //    Optional<Album> targetAlbum = recordShopService.getAllAlbums().stream()
-    //            .filter(album -> album.getTitle().equals(title))
-    //            .filter(album -> album.getArtist().equals(artist))
-    //            .findFirst();
+        if (recordShopService.updateAlbum(updatedAlbum)) {
+            return new ResponseEntity<>(updatedAlbum, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.NOT_MODIFIED);
+        }
+    }
 
-    //    recordShopService.updateAlbumById(targetAlbum.getId(), updatedAlbum);
+    @PatchMapping("/album/update/stock")
+    public ResponseEntity<Album> updateStock(
+            @RequestParam(name = "id") Long id,
+            @RequestParam(name = "amount") int amount,
+            @RequestParam(name = "increment") boolean increment) {
+        recordShopService.updateStock(id, amount, increment);
 
-    //    return new ResponseEntity<>(recordShopService.getAlbumById, HttpStatus.OK);
-    //}
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/album/delete")
+    public ResponseEntity<Album> deleteAlbum(@RequestParam(name = "id") Long id) {
+        recordShopService.deleteByAlbumId(id);
+
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
 
 }
