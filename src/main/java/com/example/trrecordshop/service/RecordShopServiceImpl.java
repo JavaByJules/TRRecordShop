@@ -31,21 +31,16 @@ public class RecordShopServiceImpl  implements  RecordShopService {
 
     @Override
     public List<Album> getAlbumsByReleaseYear(int releaseYear) {
-        List <Album> albums = new ArrayList<>();
-        albumRepository.getAlbumsByReleaseYear(releaseYear).forEach(albums::add);
-        return albums;
+        return new ArrayList<>(albumRepository.getAlbumsByReleaseYear(releaseYear));
     }
 
     @Override
     public List<Album> getAlbumsByGenre(Genre genre) {
-        List <Album> albums = new ArrayList<>();
-        albumRepository.getAlbumsByGenre(genre).forEach(albums::add);
-        return albums;
+        return new ArrayList<>(albumRepository.getAlbumsByGenre(genre));
     }
 
-    @Override
-    public Album getAlbumByAlbumName(String albumName) {
-        return albumRepository.getAlbumByTitleContainsIgnoreCase(albumName);
+    public List<Album> getAlbumsByTitle(String title) {
+        return new ArrayList<>(albumRepository.getAlbumsByTitleContainsIgnoreCase(title));
     }
 
     @Override

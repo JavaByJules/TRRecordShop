@@ -14,7 +14,7 @@ import java.util.List;
 
         List <Album> getAlbumsByGenre (Genre genre);
 
-        Album getAlbumByAlbumName (String albumName);
+        List<Album> getAlbumsByTitle(String albumName);
 
         Album insertAlbum (Album album);
 
